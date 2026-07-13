@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text('标签: $_selectedLabel',
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                     const Spacer(),
-                    Text(currentNum > 0 ? '已拍 $_currentNum 张' : '未使用',
+                    Text(currentNum > 0 ? '已拍 $currentNum �? : '未使�?,
                         style: TextStyle(color: Colors.grey.shade700)),
                   ],
                 ),
@@ -127,12 +127,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ).then((_) => _refresh());
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('需要相机权限')),
+                    const SnackBar(content: Text('需要相机权�?)),
                   );
                 }
               },
               icon: const Icon(Icons.camera_alt),
-              label: const Text('开始拍照'),
+              label: const Text('开始拍�?),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange.shade700,
                 foregroundColor: Colors.white,
