@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('摄影标签管理'),
+        title: const Text('\u6444\u5f71\u6807\u7b7e\u7ba1\u7406'),
         centerTitle: true,
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('请选择标签',
+                    const Text('\u8bf7\u9009\u62e9\u6807\u7b7e',
                         style: TextStyle(fontSize: 14, color: Colors.grey)),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
@@ -106,10 +106,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: Row(
                   children: [
-                    Text('标签: $_selectedLabel',
+                    Text('\u6807\u7b7e: $_selectedLabel',
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                     const Spacer(),
-                    Text(currentNum > 0 ? '已拍 $currentNum �? : '未使�?,
+                    Text(currentNum > 0 ? '\u5df2\u62cd $currentNum \u5f20' : '\u672a\u4f7f\u7528',
                         style: TextStyle(color: Colors.grey.shade700)),
                   ],
                 ),
@@ -127,12 +127,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ).then((_) => _refresh());
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('需要相机权�?)),
+                    const SnackBar(content: Text('\u9700\u8981\u76f8\u673a\u6743\u9650')),
                   );
                 }
               },
               icon: const Icon(Icons.camera_alt),
-              label: const Text('开始拍�?),
+              label: const Text('\u5f00\u59cb\u62cd\u6444'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange.shade700,
                 foregroundColor: Colors.white,
@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(builder: (_) => const ConfigEditScreen()))
                   .then((_) => _refresh()),
               icon: const Icon(Icons.edit),
-              label: const Text('编辑标签'),
+              label: const Text('\u7f16\u8f91\u6807\u7b7e'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (_) => const PhotoViewScreen())),
               icon: const Icon(Icons.photo_library),
-              label: const Text('查看照片'),
+              label: const Text('\u67e5\u770b\u7167\u7247'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue.shade600,
                 foregroundColor: Colors.white,
