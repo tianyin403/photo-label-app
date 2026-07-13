@@ -19,6 +19,7 @@ workflows:
       - name: Install Flutter dependencies
         script: |
           flutter pub get
+          flutter create --platforms=ios .
       - name: Install CocoaPods
         script: |
           flutter pub get
