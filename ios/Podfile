@@ -7,7 +7,7 @@ project 'Runner', {
   'Release' => :release,
 }
 
-flutter_root = File.expand_path('../../..', __FILE__)
+flutter_root = File.expand_path('..', __FILE__)
 generated_xcode_build_settings_path = File.expand_path(
   File.join('ios', 'Flutter', 'Generated.xcconfig'), flutter_root
 )
