@@ -39,7 +39,7 @@ workflows:
             DEVELOPMENT_TEAM=$APP_STORE_CONNECT_TEAM_ID \
             PROVISIONING_PROFILE_SPECIFIER="" \
             -allowProvisioningUpdates
-      - name: Export IPA (Enterprise - 手动信任安装)
+      - name: Export IPA
         script: |
           cd ios
           xcodebuild -exportArchive \
@@ -54,8 +54,3 @@ workflows:
       email:
         recipients:
           - your_email@example.com
-      # 可选：发布�?App Store Connect（如需上架则取消注释）
-      # app_store_connect:
-      #   auth: APP_STORE_CONNECT
-      #   submit_to_app_store: false
-      #   submit_to_testflight: true
