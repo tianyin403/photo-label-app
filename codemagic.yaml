@@ -19,11 +19,9 @@ workflows:
       - name: Install Flutter dependencies
         script: |
           flutter pub get
-      - name: Generate iOS Flutter project files
-        script: |
-          flutter create --platforms=ios .
       - name: Install CocoaPods
         script: |
+          flutter pub get
           cd ios
           pod install
       - name: Build Flutter for iOS (Release)
