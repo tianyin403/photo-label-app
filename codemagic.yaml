@@ -16,17 +16,10 @@ workflows:
           include: true
           source: true
     scripts:
-      - name: Generate iOS Flutter project files
-        script: |
-          flutter create --platforms=ios .
       - name: Install Flutter dependencies
         script: |
           flutter pub get
-      - name: Install CocoaPods
-        script: |
-          cd ios
-          pod install
-      - name: Build Flutter for iOS (Release)
+      - name: Build iOS (includes pod install)
         script: |
           flutter build ios --release --no-codesign
       - name: Archive for IPA
@@ -41,7 +34,7 @@ workflows:
             DEVELOPMENT_TEAM=$APP_STORE_CONNECT_TEAM_ID \
             PROVISIONING_PROFILE_SPECIFIER="" \
             -allowProvisioningUpdates
-      - name: Export IPA (Enterprise - 手动信任安装)
+      - name: Export IPA (Enterprise)
         script: |
           cd ios
           xcodebuild -exportArchive \
