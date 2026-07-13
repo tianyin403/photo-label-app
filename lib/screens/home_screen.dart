@@ -57,10 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final currentNum = _selectedLabel != null
         ? _configService.getCurrentNumber(_selectedLabel!)
         : 0;
+    final countText = currentNum > 0 ? 'Photos: $currentNum' : 'No photos';
+    final labelText = _selectedLabel ?? '';
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('\u6444\u5f71\u6807\u7b7e\u7ba1\u7406'),
+        title: const Text('Photo Label Manager'),
         centerTitle: true,
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
@@ -78,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('\u8bf7\u9009\u62e9\u6807\u7b7e',
+                    const Text('Select Label',
                         style: TextStyle(fontSize: 14, color: Colors.grey)),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
@@ -106,17 +108,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: Row(
                   children: [
-                    Text('\u6807\u7b7e: $_selectedLabel',
+                    Text('Label: $labelText',
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                     const Spacer(),
-                    Text(currentNum > 0 ? '\u5df2\u62cd $currentNum \u5f20' : '\u672a\u4f7f\u7528',
+                    Text(countText,
                         style: TextStyle(color: Colors.grey.shade700)),
                   ],
                 ),
               ),
             ],
             const SizedBox(height: 24),
-            ElevatedButton.icon(
+            ElevatedButton(
               onPressed: _selectedLabel == null ? null : () async {
                 if (await _requestCameraPermission()) {
                   Navigator.push(
@@ -127,44 +129,62 @@ class _HomeScreenState extends State<HomeScreen> {
                   ).then((_) => _refresh());
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('\u9700\u8981\u76f8\u673a\u6743\u9650')),
+                    const SnackBar(content: Text('Camera permission required')),
                   );
                 }
               },
-              icon: const Icon(Icons.camera_alt),
-              label: const Text('\u5f00\u59cb\u62cd\u6444'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange.shade700,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.camera_alt),
+                  SizedBox(width: 8),
+                  Text('Take Photo'),
+                ],
+              ),
             ),
             const SizedBox(height: 10),
-            ElevatedButton.icon(
+            ElevatedButton(
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (_) => const ConfigEditScreen()))
                   .then((_) => _refresh()),
-              icon: const Icon(Icons.edit),
-              label: const Text('\u7f16\u8f91\u6807\u7b7e'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.edit),
+                  SizedBox(width: 8),
+                  Text('Edit Labels'),
+                ],
+              ),
             ),
             const SizedBox(height: 10),
-            ElevatedButton.icon(
+            ElevatedButton(
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (_) => const PhotoViewScreen())),
-              icon: const Icon(Icons.photo_library),
-              label: const Text('\u67e5\u770b\u7167\u7247'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue.shade600,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.photo_library),
+                  SizedBox(width: 8),
+                  Text('View Photos'),
+                ],
               ),
             ),
           ],
