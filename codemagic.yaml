@@ -32,11 +32,10 @@ workflows:
             -configuration Release \
             -archivePath $CM_BUILD_DIR/build/ios/archive/Runner.xcarchive \
             archive \
-            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_STYLE=Automatic \
             DEVELOPMENT_TEAM=$APP_STORE_CONNECT_TEAM_ID \
-            PROVISIONING_PROFILE_SPECIFIER="" \
             -allowProvisioningUpdates
-      - name: Export IPA (Enterprise)
+      - name: Export IPA (Ad-Hoc)
         script: |
           cd ios
           xcodebuild -exportArchive \
