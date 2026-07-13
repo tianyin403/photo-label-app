@@ -21,8 +21,9 @@ workflows:
           flutter pub get
       - name: Install CocoaPods
         script: |
-          rm -rf ios/Runner.xcworkspace
-          pod install --project-directory=ios --repo-update
+          cd ios
+          rm -rf Runner.xcworkspace
+          pod install --repo-update
       - name: Archive (no signing)
         script: |
           cd ios
