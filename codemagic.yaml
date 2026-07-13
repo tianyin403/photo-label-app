@@ -1,0 +1,60 @@
+workflows:
+  ios-build:
+    name: iOS IPA Build
+    instance_type: mac_mini_m1
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    triggering:
+      events:
+        - push
+        - pull_request
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
+    scripts:
+      - name: Install Flutter dependencies
+        script: |
+          flutter pub get
+      - name: Install CocoaPods
+        script: |
+          cd ios
+          pod install
+      - name: Build Flutter for iOS (Release)
+        script: |
+          flutter build ios --release --no-codesign
+      - name: Archive for IPA
+        script: |
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace \
+            -scheme Runner \
+            -configuration Release \
+            -archivePath $CM_BUILD_DIR/build/ios/archive/Runner.xcarchive \
+            archive \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM=$APP_STORE_CONNECT_TEAM_ID \
+            PROVISIONING_PROFILE_SPECIFIER="" \
+            -allowProvisioningUpdates
+      - name: Export IPA (Enterprise - 手动信任安装)
+        script: |
+          cd ios
+          xcodebuild -exportArchive \
+            -archivePath $CM_BUILD_DIR/build/ios/archive/Runner.xcarchive \
+            -exportPath $CM_BUILD_DIR/build/ios/ipa \
+            -exportOptionsPlist ExportOptions_adhoc.plist \
+            -allowProvisioningUpdates
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ios/archive/*.xcarchive
+    publishing:
+      email:
+        recipients:
+          - your_email@example.com
+      # 可选：发布到 App Store Connect（如需上架则取消注释）
+      # app_store_connect:
+      #   auth: APP_STORE_CONNECT
+      #   submit_to_app_store: false
+      #   submit_to_testflight: true

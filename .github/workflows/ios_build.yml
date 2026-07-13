@@ -1,0 +1,70 @@
+name: Build iOS IPA
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: '构建类型'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release
+
+jobs:
+  build-ios:
+    name: Build iOS IPA with Flutter
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        working-directory: ./ios_app
+        run: flutter pub get
+
+      - name: Install CocoaPods
+        working-directory: ./ios_app/ios
+        run: pod install
+
+      - name: Build iOS (${{ github.event.inputs.release_type || 'release' }})
+        working-directory: ./ios_app
+        run: flutter build ios --${{ github.event.inputs.release_type || 'release' }} --no-codesign
+
+      - name: Archive
+        working-directory: ./ios_app/ios
+        run: |
+          xcodebuild -workspace Runner.xcworkspace \
+            -scheme Runner \
+            -configuration ${{ github.event.inputs.release_type == 'debug' && 'Debug' || 'Release' }} \
+            -archivePath ${{ github.workspace }}/build/ios/archive/Runner.xcarchive \
+            archive \
+            -allowProvisioningUpdates \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM='${{ secrets.APPLE_TEAM_ID }}'
+
+      - name: Export IPA
+        working-directory: ./ios_app/ios
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath ${{ github.workspace }}/build/ios/archive/Runner.xcarchive \
+            -exportPath ${{ github.workspace }}/build/ios/ipa \
+            -exportOptionsPlist ExportOptions_adhoc.plist \
+            -allowProvisioningUpdates
+
+      - name: Upload IPA as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhotoLabelApp-iOS
+          path: build/ios/ipa/*.ipa

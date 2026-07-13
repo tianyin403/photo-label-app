@@ -1,0 +1,9 @@
+{
+  "labels": [
+    {"name": "LegA-001", "lastNumber": 0},
+    {"name": "LegB-002", "lastNumber": 0},
+    {"name": "ArmC-003", "lastNumber": 0},
+    {"name": "HeadD-004", "lastNumber": 0},
+    {"name": "BodyE-005", "lastNumber": 0}
+  ]
+}
