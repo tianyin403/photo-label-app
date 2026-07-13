@@ -6,22 +6,24 @@ workflows:
     environment:
       flutter: stable
       xcode: latest
-      cocoapods: 1.15.2
+      cocoapods: default
     triggering:
       events:
         - push
         - pull_request
       branch_patterns:
-        - pattern: '*'
+        - pattern: "*"
           include: true
           source: true
     scripts:
+      - name: Generate iOS Flutter project files
+        script: |
+          flutter create --platforms=ios .
       - name: Install Flutter dependencies
         script: |
           flutter pub get
       - name: Install CocoaPods
         script: |
-          flutter pub get
           cd ios
           pod install
       - name: Build Flutter for iOS (Release)
@@ -39,7 +41,7 @@ workflows:
             DEVELOPMENT_TEAM=$APP_STORE_CONNECT_TEAM_ID \
             PROVISIONING_PROFILE_SPECIFIER="" \
             -allowProvisioningUpdates
-      - name: Export IPA
+      - name: Export IPA (Enterprise - 手动信任安装)
         script: |
           cd ios
           xcodebuild -exportArchive \
