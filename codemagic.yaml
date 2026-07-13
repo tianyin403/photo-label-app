@@ -16,18 +16,16 @@ workflows:
           include: true
           source: true
     scripts:
-      - name: Install Flutter dependencies
+      - name: Set up iOS project (SPM only)
         script: |
+          rm -f ios/Podfile ios/Podfile.lock
+          rm -rf ios/Pods ios/Runner.xcworkspace
+          flutter create --platforms=ios .
           flutter pub get
-      - name: Install CocoaPods
-        script: |
-          cd ios
-          rm -rf Runner.xcworkspace
-          pod install --repo-update
       - name: Archive (no signing)
         script: |
           cd ios
-          xcodebuild -workspace Runner.xcworkspace \
+          xcodebuild -project Runner.xcodeproj \
             -scheme Runner \
             -configuration Release \
             -archivePath $CM_BUILD_DIR/build/ios/archive/Runner.xcarchive \
