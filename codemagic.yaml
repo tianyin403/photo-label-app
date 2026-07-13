@@ -22,7 +22,6 @@ workflows:
       - name: Install CocoaPods
         script: |
           cd ios
-          pod deintegrate || true
           pod install --repo-update
       - name: Archive (no signing)
         script: |
