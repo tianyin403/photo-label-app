@@ -21,6 +21,7 @@ workflows:
           rm -f ios/Podfile ios/Podfile.lock
           rm -rf ios/Pods ios/Runner.xcworkspace
           flutter create --platforms=ios .
+          rm -f ios/Runner/GeneratedPluginRegistrant.*
           flutter pub get
       - name: Archive (no signing)
         script: |
