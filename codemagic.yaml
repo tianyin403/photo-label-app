@@ -24,7 +24,7 @@ workflows:
           rm -f ios/Runner/GeneratedPluginRegistrant.*
           sed -i '' '/GeneratedPluginRegistrant/d' ios/Runner.xcodeproj/project.pbxproj
           flutter pub get
-      - name: Archive (no signing)
+      - name: Archive
         script: |
           cd ios
           xcodebuild -project Runner.xcodeproj \
@@ -32,10 +32,20 @@ workflows:
             -configuration Release \
             -archivePath $CM_BUILD_DIR/build/ios/archive/Runner.xcarchive \
             archive \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGN_IDENTITY=- \
-            CODE_SIGNING_REQUIRED=NO
+            CODE_SIGN_STYLE=Automatic \
+            DEVELOPMENT_TEAM=$APP_STORE_CONNECT_TEAM_ID \
+            -allowProvisioningUpdates
+      - name: Export IPA (Ad-Hoc)
+        script: |
+          cd ios
+          xcodebuild -exportArchive \
+            -archivePath $CM_BUILD_DIR/build/ios/archive/Runner.xcarchive \
+            -exportPath $CM_BUILD_DIR/build/ios/ipa \
+            -exportOptionsPlist ExportOptions_adhoc.plist \
+            DEVELOPMENT_TEAM=$APP_STORE_CONNECT_TEAM_ID \
+            -allowProvisioningUpdates
     artifacts:
+      - build/ios/ipa/*.ipa
       - build/ios/archive/*.xcarchive
     publishing:
       email:
