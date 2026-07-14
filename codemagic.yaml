@@ -22,6 +22,7 @@ workflows:
           rm -rf ios/Pods ios/Runner.xcworkspace
           flutter create --platforms=ios .
           rm -f ios/Runner/GeneratedPluginRegistrant.*
+          sed -i '' '/GeneratedPluginRegistrant/d' ios/Runner.xcodeproj/project.pbxproj
           flutter pub get
       - name: Archive (no signing)
         script: |
